@@ -1,0 +1,7 @@
+apiVersion: v2
+name: app-chart
+description: Um Helm Chart para implantar um aplicativo de exemplo usando CI/CD com GitHub Actions
+type: application
+version: 0.1.0 # Versão do Chart
+appVersion: "1.16.0" # Versão do aplicativo (pode ser a tag da imagem Docker)
+icon: https://www.nginx.com/wp-content/uploads/2018/08/nginx_logo.png
