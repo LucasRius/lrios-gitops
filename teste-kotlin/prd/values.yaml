@@ -1,0 +1,15 @@
+# example-app-chart/values.yaml
+replicaCount: 1
+image:
+  # Repositório da sua imagem Docker (ex: ghcr.io/seu-usuario/seu-app)
+  repository: lucasrios92/teste-kotlin
+  # A tag da imagem será tipicamente sobrescrita pelo GitHub Actions (ex: ${{ github.sha }})
+  tag: 6819cd1
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+container:
+  # Porta que o container está escutando (padrão NGINX)
+  port: 80
