@@ -1,0 +1,12 @@
+# example-app-chart/values.yaml
+replicaCount: 5
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+container:
+  # Porta que o container está escutando (padrão NGINX)
+  port: 80
+image:
+  repository: lucasrios92/teste-kotlin
+  tag: a61de58
