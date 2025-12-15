@@ -9,4 +9,4 @@ container:
   port: 80
 image:
   repository: lucasrios92/teste-kotlin
-  tag: a61de58
+  tag: sha-6bbec76
