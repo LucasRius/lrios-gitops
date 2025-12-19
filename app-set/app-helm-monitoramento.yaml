@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: prod-applications
+  namespace: argocd
+spec:
+
+  generators:
+  - git:
+      repoURL: https://github.com/LucasRius/lrios-gitops.git
+      revision: HEAD
+
+      # O gerador encontra o diretório de cada serviço (ex: apps/teste-kotlin)
+      directories:
+      - path: "apps/*" 
+
+  template:
+    metadata:
+      # 💥 CORREÇÃO PRINCIPAL: Usamos path.segments[1] para obter apenas o nome do serviço (ex: teste-kotlin).
+      name: lucas-prod-{{path.basename}}
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      
+      source:
+        repoURL: https://github.com/LucasRius/lrios-gitops.git
+        targetRevision: main 
+        path: app-chart # O Chart base
+        
+        # CONFIGURAÇÃO HELM 
+        helm:
+          valueFiles:
+            # 💡 NOTA: O ApplicationSet substitui {{ path }} aqui.
+            # O path é (ex: 'apps/teste-kotlin'). 
+            # O arquivo final lido será: lrios-gitops/apps/teste-kotlin/prd/values.yaml
+            - '/{{ path }}/prd/values.yaml' 
+            
+      destination:
+        server: https://kubernetes.default.svc
+        # 🎯 OPÇÃO A: Se o namespace for fixo (monitoramento).
+        namespace: monitoramento 
+        
+
+        
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

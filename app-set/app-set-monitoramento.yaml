@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app-set
+  namespace: argocd
+spec:
+  template:
+    metadata:
+      name: 'app-controller-{{ name }}'
+      namespace: monitoramento
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/LucasRius/lrios-argocd-appset.git
+        path: monitoramento
+        targetRevision: HEAD
+      destination:
+        server: '{{ server }}'
+        namespace: monitoramento
+      syncPolicy:
+        automated:
+          selfHeal: true
+          enabled: true
+          prune: true
+  generators:
+  - clusters: {}
+    
